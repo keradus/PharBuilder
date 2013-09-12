@@ -18,6 +18,6 @@ $phar = new PharBuilder\LibBuilder(
 );
 $files = $phar->addDirFiles("source/Ker");
 
-echo ("Added files: $files");
+echo "Added files: $files";
 
 $phar->build();
