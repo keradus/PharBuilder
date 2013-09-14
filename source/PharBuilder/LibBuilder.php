@@ -20,7 +20,6 @@ class LibBuilder extends ABuilder
 ';
         }
 
-
         if ($this->useSplClassLoader) {
             $code .= '
 $l = new SplClassLoader("' . $this->name . '", "phar://' . $this->alias . '");

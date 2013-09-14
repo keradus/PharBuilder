@@ -30,11 +30,13 @@ class CLI
         ),
     );
 
-    public function __construct() {
+    public function __construct()
+    {
         $command = (isset($_SERVER["argv"][1]) ? $_SERVER["argv"][1] : "about");
 
         if (!isset($this->commands[$command])) {
             $this->unknownAction();
+
             return;
         }
 
@@ -50,17 +52,20 @@ class CLI
 
         if ($socket) {
             fclose($socket);
+
             return true;
         }
 
         return false;
     }
 
-    public function unknownAction() {
+    public function unknownAction()
+    {
         echo "Unknown action, run `help` command.\n";
     }
 
-    public function about() {
+    public function about()
+    {
         $meta = $this->phar->getMetadata();
 
         echo "{$meta["name"]} (build {$meta["buildDate"]}) on {$meta["license"]} license.\n";
@@ -69,7 +74,7 @@ class CLI
         echo "\n";
 
         echo "Authors: \n";
-        foreach($meta["authors"] AS $author) {
+        foreach ($meta["authors"] AS $author) {
             echo "    * {$author["name"]} <{$author["email"]}>\n";
         }
 
@@ -78,16 +83,18 @@ class CLI
         echo "See `help` for available commands.\n";
     }
 
-    public function help() {
+    public function help()
+    {
         echo "Available commands:\n";
 
         ksort($this->commands);
-        foreach($this->commands AS $commandName => $commandData) {
+        foreach ($this->commands AS $commandName => $commandData) {
             echo "    * $commandName - {$commandData["descr"]}\n";
         }
     }
 
-    public function update() {
+    public function update()
+    {
         $selfFilename = $_SERVER["argv"][0];
         $tempFilename = basename($selfFilename, ".phar") . "-temp.phar";
 
