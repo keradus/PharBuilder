@@ -25,6 +25,10 @@ abstract class ABuilder
             $this->meta["buildDate"] = date("Y-m-d H:i:s");
         }
 
+        if (file_exists($this->filePath)) {
+            unlink($this->filePath);
+        }
+
         $this->phar = new \Phar($this->filePath, \FilesystemIterator::CURRENT_AS_FILEINFO | \FilesystemIterator::KEY_AS_FILENAME, $this->alias);
 
         $this->phar->startBuffering();
