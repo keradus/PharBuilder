@@ -4,9 +4,11 @@ namespace PharBuilder;
 
 abstract class ABuilder
 {
+    protected $alias;
+    protected $file;
+    protected $filePath;
     protected $meta;
     protected $name;
-    protected $file;
     protected $phar;
 
     abstract protected function generateStubContent();
@@ -14,14 +16,16 @@ abstract class ABuilder
     public function __construct($_name, $_file, $_path, $_meta = array())
     {
         $this->name = $_name;
+        $this->alias = ($this->name . ".phar");
         $this->file = $_file;
+        $this->filePath = ($_path . DIRECTORY_SEPARATOR . $this->file . ".phar");
         $this->meta = $_meta;
 
         if (!isset($this->meta["buildDate"])) {
             $this->meta["buildDate"] = date("Y-m-d H:i:s");
         }
 
-        $this->phar = new \Phar($_path . DIRECTORY_SEPARATOR . $_file . ".phar", \FilesystemIterator::CURRENT_AS_FILEINFO | \FilesystemIterator::KEY_AS_FILENAME, "$_name.phar");
+        $this->phar = new \Phar($this->filePath, \FilesystemIterator::CURRENT_AS_FILEINFO | \FilesystemIterator::KEY_AS_FILENAME, $this->alias);
 
         $this->phar->startBuffering();
     }
