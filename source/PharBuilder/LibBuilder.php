@@ -4,12 +4,33 @@ namespace PharBuilder;
 
 class LibBuilder extends ABuilder
 {
+    public $cliStub = null;
+    public $useSplClassLoader = false;
+
     protected function generateStubContent()
     {
-        return '<?php
-$l = new SplClassLoader("' . $this->name . '", "phar://" . __DIR__ . "/' . $this->file . '.phar");
+        $code = '<?php
+';
+
+        if ($this->cliStub) {
+            $code .= 'if (php_sapi_name() === "cli" && $argv[0] === basename(__FILE__)) {
+    ' . $this->cliStub . '
+    return;
+}
+';
+        }
+
+
+        if ($this->useSplClassLoader) {
+            $code .= '
+$l = new SplClassLoader("' . $this->name . '", "phar://' . $this->alias . '");
 $l->register();
-__HALT_COMPILER();';
+';
+        }
+
+        $code .= '__HALT_COMPILER();';
+
+        return $code;
     }
 
     public function addFile($_srcPath, $_destPath)
