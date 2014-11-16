@@ -1,6 +1,8 @@
 PharBuilder
 ===========
 
+> This library is obsolete! Use [Box](https://github.com/box-project/box2) instead!
+
 Build entire application or just views files into single phar file.
 
 Usage
